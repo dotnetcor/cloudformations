@@ -1,0 +1,31 @@
+---
+Resources:
+  TUDublinEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      AvailabilityZone: us-east-1a
+      InstanceType: t2.micro
+      KeyName: TU_Dublin
+      ImageId: ami-01e3b8c3a51e88954
+      SecurityGroups:
+        - !Ref SGBase
+  SGBase:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Base Security Group
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          CidrIp: 0.0.0.0/0
+          FromPort: 22
+          ToPort: 22
+  SGBaseIngress:
+    Type: 'AWS::EC2::SecurityGroupIngress'
+    Properties:
+      GroupName: !Ref SGBase
+      IpProtocol: tcp
+      FromPort: 80
+      ToPort: 80
+  EIPDERP:
+    Type: AWS::EC2::EIP
+    Properties:
+     InstanceId: !Ref TUDublinEC2Instance
